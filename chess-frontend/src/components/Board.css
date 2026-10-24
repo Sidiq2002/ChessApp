@@ -1,0 +1,261 @@
+.glass-arena-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 35%, #162a3a 0%, #09131c 55%, #04080e 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #e2f1ff;
+  user-select: none;
+}
+
+.arena-ambient-glow {
+  position: absolute;
+  width: 680px;
+  height: 680px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(165, 243, 252, 0.1) 0%, rgba(100, 100, 100, 0.04) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* HUD Bar */
+.arena-hud {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 36px;
+  background: rgba(10, 18, 28, 0.65);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hud-controls, .view-switcher {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #dbeafe;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hud-btn:hover { background: rgba(180, 180, 180, 0.2); transform: translateY(-1px); }
+.hud-btn.active { background: linear-gradient(135deg, #7a7a7a, #4a4a4a); border-color: #a0a0a0; color: #ffffff; box-shadow: 0 0 15px rgba(200, 200, 200, 0.3); }
+.reset-btn { background: rgba(127, 166, 80, 0.2); border-color: rgba(127, 166, 80, 0.5); }
+.reset-btn:hover { background: rgba(127, 166, 80, 0.4); }
+
+.hud-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 22px;
+  border-radius: 30px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+.turn-dot { width: 12px; height: 12px; border-radius: 50%; }
+.white-turn { background: #ffffff; box-shadow: 0 0 10px #ffffff, 0 0 20px #e2f1ff; }
+.black-turn { background: #22d3ee; box-shadow: 0 0 10px #67e8f9, 0 0 20px #0891b2; }
+.status-text { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; }
+.room-badge { background: rgba(200, 200, 200, 0.2); border: 1px solid rgba(200, 200, 200, 0.4); padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; color: #e0e0e0; }
+
+/* Main Stage */
+.arena-stage {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.player-glass-panel {
+  width: 240px;
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+  z-index: 20;
+}
+.player-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.player-header h4 { margin: 0; font-size: 1rem; color: #ffffff; }
+.piece-tag { font-size: 0.75rem; color: #94a3b8; }
+.avatar-orb { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.white-orb { background: radial-gradient(circle, rgba(255, 255, 255, 0.6), rgba(200, 200, 200, 0.2)); border: 1px solid rgba(255, 255, 255, 0.6); }
+.black-orb { background: radial-gradient(circle, rgba(34, 211, 238, 0.6), rgba(8, 51, 68, 0.9)); border: 1px solid rgba(34, 211, 238, 0.6); }
+.captured-tray { min-height: 44px; display: flex; flex-wrap: wrap; gap: 4px; padding: 8px; border-radius: 10px; background: rgba(0, 0, 0, 0.3); border: 1px inset rgba(255, 255, 255, 0.06); }
+.mini-captured { width: 28px; height: 28px; }
+
+/* =====================================================
+   METALLIC COIN CHASSIS
+   ===================================================== */
+.scene-3d {
+  perspective: 1600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+}
+
+.metallic-coin-chassis {
+  position: relative;
+  width: 760px;
+  height: 760px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e2e2e2 0%, #cacaca 40%, #9c9c9c 75%, #6a6a6a 95%, #444 100%);
+  box-shadow: 
+    0 40px 70px rgba(0, 0, 0, 0.95),
+    inset 0 4px 15px rgba(255, 255, 255, 0.9),
+    inset 0 -10px 25px rgba(0, 0, 0, 0.7);
+  border: 12px solid #8e8e8e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.coin-engraving-ring {
+  position: absolute;
+  inset: 15px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(0,0,0,0.05) 0deg 2deg, transparent 2deg 6deg);
+  border: 4px solid #b5b5b5;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 5px rgba(255,255,255,0.5);
+  pointer-events: none;
+}
+
+.coin-inner-rim {
+  position: absolute;
+  inset: 75px;
+  border-radius: 50%;
+  border: 3px solid #888;
+  background: radial-gradient(circle, transparent 95%, rgba(0,0,0,0.2) 100%);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+
+.crown {
+  position: absolute;
+  font-size: 32px;
+  color: #4a4a4a;
+  text-shadow: 1px 1px 0px rgba(255,255,255,0.7), -1px -1px 0px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+.crown-top { top: 35px; }
+.crown-bottom { bottom: 35px; transform: rotate(180deg); }
+.crown-left { left: 35px; transform: rotate(-90deg); }
+.crown-right { right: 35px; transform: rotate(90deg); }
+
+/* Camera Views */
+.view-isometric .metallic-coin-chassis { transform: rotateX(54deg) rotateZ(-42deg); }
+.view-tilted .metallic-coin-chassis { transform: rotateX(46deg) rotateZ(0deg); }
+.view-flat .metallic-coin-chassis { transform: rotateX(0deg) rotateZ(0deg); }
+
+/* Chessboard Embed */
+.chessboard-grid {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(8, 64px);
+  grid-template-rows: repeat(8, 64px);
+  border: 4px solid #222;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6), inset 0 0 5px #000;
+  transform-style: preserve-3d;
+  background: #111;
+}
+
+.glass-tile {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.silver-light {
+  background: linear-gradient(135deg, #f0f0f0 0%, #d4d4d4 100%);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+}
+
+.obsidian-dark {
+  background: linear-gradient(135deg, #2a2a2a 0%, #111111 100%);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+.glass-tile:hover { box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.5); }
+.tile-selected { background: radial-gradient(circle, rgba(165, 243, 252, 0.3) 0%, rgba(6, 182, 212, 0.25) 100%) !important; box-shadow: 0 0 25px rgba(34, 211, 238, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.5) !important; }
+.tile-last-move { box-shadow: inset 0 0 20px rgba(132, 204, 22, 0.6); }
+.tile-check-alert { background: radial-gradient(circle, rgba(239, 68, 68, 0.8), rgba(153, 27, 27, 0.45)) !important; box-shadow: 0 0 30px rgba(239, 68, 68, 0.95) !important; }
+.move-dot-indicator { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle, #67e8f9 10%, #06b6d4 80%); box-shadow: 0 0 14px #22d3ee; transform: translateZ(4px); pointer-events: none; }
+.capture-ring-indicator { position: absolute; inset: 4px; border-radius: 50%; border: 3px solid #f43f5e; box-shadow: 0 0 14px rgba(244, 63, 94, 0.85); transform: translateZ(4px); pointer-events: none; }
+
+/* =====================================================
+   TRANSPARENT GLASS PIECES (ALIGNMENT FIXED)
+   ===================================================== */
+.glass-piece-wrapper {
+  position: absolute;
+  inset: 0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.sculpture-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 75%; 
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.view-isometric .sculpture-container { transform: rotateZ(42deg) rotateX(-54deg) scale(1.4) translateY(-4px) translateX(-2px); }
+.view-tilted .sculpture-container { transform: rotateX(-46deg) scale(1.25) translateY(-2px); }
+.view-flat .sculpture-container { transform: translateZ(8px) scale(1.1); }
+
+.glass-tile:hover .glass-piece-wrapper { transform: translateZ(10px); }
+.piece-lifted { transform: translateZ(24px) !important; }
+
+.glass-sculpture { width: 100%; height: 100%; overflow: visible; }
+
+/* Glass specific drop shadows to simulate light passing through */
+.glass-clear { filter: drop-shadow(0 12px 10px rgba(0, 0, 0, 0.4)); }
+.glass-cyan { filter: drop-shadow(0 12px 10px rgba(8, 145, 178, 0.35)) drop-shadow(0 0 5px rgba(103, 232, 249, 0.15)); }
+
+@media (max-width: 1200px) {
+  .metallic-coin-chassis { width: 620px; height: 620px; }
+  .chessboard-grid { grid-template-columns: repeat(8, 52px); grid-template-rows: repeat(8, 52px); }
+  .glass-tile { width: 52px; height: 52px; }
+  .player-glass-panel { display: none; }
+}
